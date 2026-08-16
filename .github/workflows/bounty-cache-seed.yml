@@ -1,0 +1,26 @@
+name: Bounty cache isolation seed
+on:
+  push:
+    branches:
+      - bounty-cache-isolation-20260816
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create harmless marker
+        shell: bash
+        run: |
+          mkdir -p bounty-cache
+          printf '%s\n' 'repo-b-owned-marker-20260816-7cbecfd9' > bounty-cache/marker.txt
+      - name: Save repository B cache
+        uses: actions/cache/save@v4
+        with:
+          path: bounty-cache
+          key: bounty-isolation-20260816-7cbecfd9
+      - name: Record result
+        shell: bash
+        run: echo 'RESULT=REPOSITORY_B_CACHE_SAVED'
